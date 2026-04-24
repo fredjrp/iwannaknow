@@ -44,7 +44,7 @@ class StkPushRequest(BaseModel):
 class JumiaOrderRequest(BaseModel):
     api_key: str
     order_id: str
-    action: str  # "get_label", "mark_ready", "get_pending"
+    action: str
 
 class HubRequest(BaseModel):
     name: str
@@ -57,11 +57,7 @@ class HubRequest(BaseModel):
 
 @app.get("/layout/{screen_name}")
 async def get_layout(screen_name: str, user_role: str = "ordinary"):
-    """
-    Serve UI JSON for the Flutter thin client.
-    Different layouts can be served based on user role.
-    """
-    # Check for role-specific layout first
+    """Serve UI JSON for the Flutter thin client."""
     role_file = f"layouts/{screen_name}_{user_role}.json"
     generic_file = f"layouts/{screen_name}.json"
     
@@ -74,7 +70,7 @@ async def get_layout(screen_name: str, user_role: str = "ordinary"):
     else:
         return {"error": "Layout not found", "status": 404}
     
-    # Inject dynamic data (group buy counts, etc.)
+    # Inject dynamic data
     if os.path.exists("data/deals.json"):
         with open("data/deals.json", "r") as f:
             deals_data = json.load(f)
@@ -88,7 +84,7 @@ async def get_layout(screen_name: str, user_role: str = "ordinary"):
 
 @app.get("/layout/components/{component_name}")
 async def get_component(component_name: str):
-    """Fetch a single UI component by name"""
+    """Fetch a single UI component by name."""
     file_path = f"components/{component_name}.json"
     if os.path.exists(file_path):
         with open(file_path, "r") as f:
@@ -99,7 +95,7 @@ async def get_component(component_name: str):
 
 @app.get("/api/deals")
 async def get_active_deals(hub: Optional[str] = None, category: Optional[str] = None):
-    """Return active group buy deals with optional filters"""
+    """Return active group buy deals with optional filters."""
     if not os.path.exists("data/deals.json"):
         return {"deals": [], "count": 0}
     
@@ -108,11 +104,8 @@ async def get_active_deals(hub: Optional[str] = None, category: Optional[str] = 
     
     deals = data.get("deals", [])
     
-    # Filter by hub
     if hub:
         deals = [d for d in deals if d.get("hub") == hub]
-    
-    # Filter by category
     if category:
         deals = [d for d in deals if d.get("category") == category]
     
@@ -124,7 +117,7 @@ async def get_active_deals(hub: Optional[str] = None, category: Optional[str] = 
 
 @app.get("/api/deals/{deal_id}")
 async def get_deal_detail(deal_id: str):
-    """Get detailed info for a specific deal"""
+    """Get detailed info for a specific deal."""
     if not os.path.exists("data/deals.json"):
         return {"error": "Deal not found", "status": 404}
     
@@ -133,13 +126,12 @@ async def get_deal_detail(deal_id: str):
     
     for deal in data.get("deals", []):
         if deal["id"] == deal_id:
-            # Add profit calculation for Jumia sellers
             wholesale = deal["wholesale_price"]
             retail = deal.get("retail_price", wholesale * 1.8)
             jumia_commission = retail * 0.10
             shipping = 150
             net_profit = retail - wholesale - jumia_commission - shipping
-            margin = (net_profit / retail) * 100
+            margin = (net_profit / retail) * 100 if retail > 0 else 0
             
             deal["profit_analysis"] = {
                 "landing_cost": wholesale,
@@ -156,15 +148,14 @@ async def get_deal_detail(deal_id: str):
 
 @app.post("/api/deals/calculate-profit")
 async def calculate_profit(request: DealRequest):
-    """Calculate potential profit for a Jumia seller"""
+    """Calculate potential profit for a Jumia seller."""
     retail = request.jumia_selling_price or (request.wholesale_price * 1.8)
     jumia_commission = retail * 0.10
     shipping = 150
     net_profit = retail - request.wholesale_price - jumia_commission - shipping
-    margin = (net_profit / retail) * 100
+    margin = (net_profit / retail) * 100 if retail > 0 else 0
     
-    # Calculate savings from group buy vs individual purchase
-    individual_price = request.wholesale_price * 1.3  # 30% markup for individual
+    individual_price = request.wholesale_price * 1.3
     group_savings = individual_price - request.wholesale_price
     
     return {
@@ -185,13 +176,13 @@ async def calculate_profit(request: DealRequest):
 
 @app.post("/api/ai/chat")
 async def chat_with_floy(request: ChatRequest):
-    """Proxy to OpenRouter - hides API key from client"""
+    """Proxy to OpenRouter - hides API key from client."""
     openrouter_key = os.getenv("OPENROUTER_API_KEY")
     
     if not openrouter_key:
         return {"reply": "Floy is recharging her battery! Try again in a moment. 🔋"}
 
-    # Load deals context for Floy
+    # Load deals context
     deals_context = ""
     if os.path.exists("data/deals.json"):
         with open("data/deals.json", "r") as f:
@@ -199,21 +190,11 @@ async def chat_with_floy(request: ChatRequest):
         active_deals = [d for d in deals_data.get("deals", []) if d.get("status") == "active"]
         deals_context = f"Current active deals: {json.dumps(active_deals[:3])}"
 
-    async with httpx.AsyncClient() as client:
-        try:
-            response = await client.post(
-                "https://openrouter.ai/api/v1/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {openrouter_key}",
-                    "HTTP-Referer": "https://delo.app",
-                    "X-Title": "Delo - Floy Assistant",
-                },
-                json={
-                    "model": "nvidia/llama-3.1-nemotron-nano-8b-v1:free",
-                    "messages": [
-                        {
-                            "role": "system",
-                            "content": f"""You are Floy, the AI assistant for Delo - a group-buy logistics platform in Kenya.
+    # Build messages list (FIXED - no inline unpacking)
+    messages = [
+        {
+            "role": "system",
+            "content": f"""You are Floy, the AI assistant for Delo - a group-buy logistics platform in Kenya.
 
 PERSONALITY:
 - Energetic, friendly, and street-smart
@@ -230,10 +211,29 @@ RULES:
 {deals_context}
 
 NEVER mention being an AI. You are Floy, a real Kenyan assistant."""
-                        },
-                        *request.history if request.history else [],
-                        {"role": "user", "content": request.message}
-                    ],
+        }
+    ]
+    
+    # Add history if provided
+    if request.history:
+        for msg in request.history:
+            messages.append(msg)
+    
+    # Add current message
+    messages.append({"role": "user", "content": request.message})
+
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {openrouter_key}",
+                    "HTTP-Referer": "https://delo.app",
+                    "X-Title": "Delo - Floy Assistant",
+                },
+                json={
+                    "model": "nvidia/llama-3.1-nemotron-nano-8b-v1:free",
+                    "messages": messages,
                     "temperature": 0.7,
                     "max_tokens": 250,
                 },
@@ -245,7 +245,6 @@ NEVER mention being an AI. You are Floy, a real Kenyan assistant."""
             return {"reply": reply, "model": data.get("model", "unknown")}
             
         except httpx.TimeoutException:
-            # Try fallback model
             try:
                 response = await client.post(
                     "https://openrouter.ai/api/v1/chat/completions",
@@ -275,7 +274,7 @@ NEVER mention being an AI. You are Floy, a real Kenyan assistant."""
 
 @app.get("/api/ai/suggestions")
 async def get_ai_suggestions():
-    """Return suggested prompts for Floy"""
+    """Return suggested prompts for Floy."""
     return {
         "suggestions": [
             "How do group buys work on Delo?",
@@ -291,7 +290,7 @@ async def get_ai_suggestions():
 
 @app.get("/api/hubs")
 async def get_hubs():
-    """Return all collection hubs"""
+    """Return all collection hubs."""
     if os.path.exists("data/hubs.json"):
         with open("data/hubs.json", "r") as f:
             return json.load(f)
@@ -299,19 +298,22 @@ async def get_hubs():
 
 @app.post("/api/hubs/suggest")
 async def suggest_hub(request: HubRequest):
-    """Users can suggest new hub locations"""
-    suggestion = request.dict()
+    """Users can suggest new hub locations."""
+    suggestion = request.model_dump()
     suggestion["status"] = "suggested"
     suggestion["suggested_at"] = datetime.now().isoformat()
     
-    # In production, save to database
-    # For now, append to a file
     file_path = "data/hub_suggestions.json"
     existing = []
     if os.path.exists(file_path):
         with open(file_path, "r") as f:
-            existing = json.load(f)
+            try:
+                existing = json.load(f)
+            except:
+                existing = []
+    
     existing.append(suggestion)
+    os.makedirs("data", exist_ok=True)
     with open(file_path, "w") as f:
         json.dump(existing, f, indent=2)
     
@@ -321,19 +323,13 @@ async def suggest_hub(request: HubRequest):
 
 @app.post("/api/mpesa/stk-push")
 async def trigger_stk_push(request: StkPushRequest):
-    """
-    Proxy for M-Pesa STK Push.
-    In production, this calls Safaricom's API directly.
-    For development, returns mock response.
-    """
-    # Format phone number
+    """Proxy for M-Pesa STK Push."""
     phone = request.phone_number.replace("+", "").replace(" ", "")
     if phone.startswith("0"):
         phone = "254" + phone[1:]
     elif not phone.startswith("254"):
         phone = "254" + phone
     
-    # Mock STK Push response (replace with actual Safaricom API call in production)
     checkout_id = f"ws_CO_{datetime.now().strftime('%Y%m%d%H%M%S')}_{phone[-4:]}"
     
     return {
@@ -349,8 +345,7 @@ async def trigger_stk_push(request: StkPushRequest):
 
 @app.post("/api/mpesa/callback")
 async def mpesa_callback(request: dict):
-    """Handle M-Pesa payment confirmation callback"""
-    # In production, verify signature and process payment
+    """Handle M-Pesa payment confirmation callback."""
     result = request.get("Body", {}).get("stkCallback", {})
     
     callback_data = {
@@ -361,7 +356,6 @@ async def mpesa_callback(request: dict):
         "processed_at": datetime.now().isoformat()
     }
     
-    # Log to file (in production, update database)
     os.makedirs("logs", exist_ok=True)
     with open("logs/mpesa_callbacks.jsonl", "a") as f:
         f.write(json.dumps(callback_data) + "\n")
@@ -372,15 +366,10 @@ async def mpesa_callback(request: dict):
 
 @app.post("/api/jumia/orders")
 async def proxy_jumia_orders(request: JumiaOrderRequest):
-    """
-    Proxy for Jumia Seller Center API calls.
-    In production, this connects to Jumia's actual API.
-    """
-    # NEVER log the API key
+    """Proxy for Jumia Seller Center API calls."""
     print(f"Jumia API call: action={request.action}, order={request.order_id}")
     
     if request.action == "get_pending":
-        # Mock response
         return {
             "orders": [
                 {
@@ -410,7 +399,7 @@ async def proxy_jumia_orders(request: JumiaOrderRequest):
 
 @app.get("/api/jumia/fee-structure")
 async def get_jumia_fees():
-    """Return current Jumia fee structure for profit calculations"""
+    """Return current Jumia fee structure."""
     return {
         "categories": {
             "electronics": {"commission": 10, "shipping": 150},
