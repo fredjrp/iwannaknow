@@ -1,0 +1,105 @@
+{
+  "hubs": [
+    {
+      "id": "hub_cbd",
+      "name": "Delo CBD Hub",
+      "address": "Moi Avenue, Shop 12B, Nairobi CBD",
+      "latitude": -1.2833,
+      "longitude": 36.8219,
+      "status": "active",
+      "active_deals": 3,
+      "phone_number": "+254712345678",
+      "operating_hours": {
+        "monday_friday": "08:00 - 18:00",
+        "saturday": "09:00 - 14:00",
+        "sunday": "Closed"
+      },
+      "capacity": 500,
+      "current_stock": 120,
+      "nearest_landmark": "Next to Naivas Supermarket",
+      "has_jumia_vdo_nearby": true
+    },
+    {
+      "id": "hub_westlands",
+      "name": "Westlands Collection Point",
+      "address": "Waiyaki Way, Westlands",
+      "latitude": -1.2687,
+      "longitude": 36.8055,
+      "status": "active",
+      "active_deals": 2,
+      "phone_number": "+254723456789",
+      "operating_hours": {
+        "monday_friday": "09:00 - 19:00",
+        "saturday": "09:00 - 16:00",
+        "sunday": "Closed"
+      },
+      "capacity": 300,
+      "current_stock": 85,
+      "nearest_landmark": "Sarit Centre",
+      "has_jumia_vdo_nearby": true
+    },
+    {
+      "id": "hub_kilimani",
+      "name": "Kilimani Hub",
+      "address": "Argwings Kodhek Road, Kilimani",
+      "latitude": -1.2921,
+      "longitude": 36.7860,
+      "status": "active",
+      "active_deals": 1,
+      "phone_number": null,
+      "operating_hours": {
+        "monday_friday": "08:00 - 17:00",
+        "saturday": "10:00 - 14:00",
+        "sunday": "Closed"
+      },
+      "capacity": 200,
+      "current_stock": 45,
+      "nearest_landmark": "Yaya Centre",
+      "has_jumia_vdo_nearby": false
+    },
+    {
+      "id": "hub_eastleigh",
+      "name": "Eastleigh Pickup Point",
+      "address": "First Avenue, Eastleigh",
+      "latitude": -1.2694,
+      "longitude": 36.8481,
+      "status": "active",
+      "active_deals": 4,
+      "phone_number": "+254734567890",
+      "operating_hours": {
+        "monday_friday": "07:00 - 20:00",
+        "saturday": "08:00 - 18:00",
+        "sunday": "10:00 - 16:00"
+      },
+      "capacity": 600,
+      "current_stock": 210,
+      "nearest_landmark": "Garissa Lodge Roundabout",
+      "has_jumia_vdo_nearby": true
+    },
+    {
+      "id": "hub_karen",
+      "name": "Karen Drop Point",
+      "address": "Karen Road, Karen",
+      "latitude": -1.3194,
+      "longitude": 36.7052,
+      "status": "closed",
+      "active_deals": 0,
+      "phone_number": null,
+      "operating_hours": {
+        "monday_friday": "Temporarily Closed",
+        "saturday": "Temporarily Closed",
+        "sunday": "Temporarily Closed"
+      },
+      "capacity": 150,
+      "current_stock": 0,
+      "nearest_landmark": "Karen Shopping Centre",
+      "has_jumia_vdo_nearby": false
+    }
+  ],
+  "_meta": {
+    "total_hubs": 5,
+    "active_hubs": 4,
+    "total_capacity": 1750,
+    "last_updated": "2026-04-24T12:00:00Z"
+  }
+}
