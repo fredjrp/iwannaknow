@@ -1,0 +1,137 @@
+{
+  "screen": "Home",
+  "theme": "M3_Expressive",
+  "version": 2,
+  "user_role": "dropshipper",
+  "components": [
+    {
+      "type": "M3Card",
+      "id": "floy_banner",
+      "props": {
+        "elevation": 0,
+        "color": "tertiaryContainer"
+      },
+      "content": {
+        "title": "💼 Ready to source, boss?",
+        "supporting_text": "Floy can calculate your Jumia profits before you buy!",
+        "badge": "Vendor Mode"
+      },
+      "action": "open_floy_chat"
+    },
+    {
+      "type": "M3Card",
+      "id": "jumia_stats",
+      "props": {
+        "elevation": 2,
+        "color": "primaryContainer"
+      },
+      "content": {
+        "title": "📊 Your Jumia Dashboard",
+        "supporting_text": "3 pending orders | 2 ready to ship",
+        "badge": "Connected ✅"
+      },
+      "child": {
+        "type": "M3Row",
+        "props": {
+          "spacing": 8,
+          "alignment": "spaceEvenly"
+        },
+        "children": [
+          {
+            "type": "M3Chip",
+            "props": {
+              "label": "Orders: 5",
+              "color": "primary"
+            }
+          },
+          {
+            "type": "M3Chip",
+            "props": {
+              "label": "Revenue: KES 12,500",
+              "color": "tertiary"
+            }
+          },
+          {
+            "type": "M3Chip",
+            "props": {
+              "label": "Profit: KES 3,200",
+              "color": "secondaryContainer"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "M3Card",
+      "id": "hero_deal",
+      "props": {
+        "elevation": 2
+      },
+      "content": {
+        "title": "🔥 Nairobi Group Buy: Power Banks",
+        "supporting_text": "10,000mAh - MOQ: 20 units",
+        "badge": "HOT DEAL"
+      },
+      "child": {
+        "type": "M3Column",
+        "children": [
+          {
+            "type": "M3Card",
+            "props": {
+              "elevation": 0,
+              "color": "surfaceVariant"
+            },
+            "content": {
+              "title": "💰 Profit Calculator",
+              "supporting_text": "Buy at KES 600 → Sell on Jumia at KES 1,500 = KES 510 profit/unit (34% margin)"
+            }
+          },
+          {
+            "type": "M3SplitButton",
+            "props": {
+              "primary_label": "Join Group Buy (KES 600)",
+              "secondary_label": "Calculate Exact Profit",
+              "primary_action": "trigger_stk_push:deal_001:600",
+              "secondary_action": "calculate_profit:deal_001"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "M3Card",
+      "id": "deal_earbuds",
+      "props": {
+        "elevation": 1
+      },
+      "content": {
+        "title": "🎧 Wireless Earbuds Pro",
+        "supporting_text": "MOQ: 20 units | 8 joined",
+        "badge": "8/20"
+      },
+      "child": {
+        "type": "M3SplitButton",
+        "props": {
+          "primary_label": "Join (KES 800)",
+          "secondary_label": "View Margin",
+          "primary_action": "trigger_stk_push:deal_002:800",
+          "secondary_action": "calculate_profit:deal_002"
+        }
+      }
+    },
+    {
+      "type": "M3Card",
+      "id": "hub_status",
+      "props": {
+        "elevation": 0,
+        "color": "surfaceVariant"
+      },
+      "content": {
+        "title": "📍 Hub Status",
+        "supporting_text": "CBD Hub: 3 labels printed today | Your next pickup: Today 4 PM",
+        "badge": "Active"
+      },
+      "action": "navigate_to_map"
+    }
+  ]
+}
