@@ -1,0 +1,16 @@
+{
+  "screen": "Home",
+  "theme": "M3_Expressive",
+  "components": [
+    {
+      "type": "M3Card",
+      "id": "hero_deal",
+      "content": {
+        "title": "Nairobi Group Buy: Power Banks",
+        "supporting_text": "Join the current group to save 40%",
+        "badge": "Active"
+      },
+      "action": "view_deal_details"
+    }
+  ]
+}

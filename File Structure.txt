@@ -1,0 +1,5 @@
+delo-backend/
+├── main.py              # The Logic
+├── requirements.txt     # The Dependencies
+└── layouts/             # The UI Brain
+    └── home.json        # Your first SDUI layout
