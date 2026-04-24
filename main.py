@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import os
-import base64
 from datetime import datetime
 from typing import Optional, List
 from pydantic import BaseModel
