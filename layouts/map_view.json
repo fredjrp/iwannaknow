@@ -1,0 +1,64 @@
+{
+  "screen": "Map",
+  "theme": "M3_Expressive",
+  "version": 2,
+  "components": [
+    {
+      "type": "M3MapboxMap",
+      "id": "hub_map",
+      "props": {
+        "center_lat": -1.2921,
+        "center_lng": 36.8219,
+        "zoom": 12.0,
+        "style": "light",
+        "show_user_location": true,
+        "hubs": [
+          {
+            "id": "hub_cbd",
+            "name": "Delo CBD Hub",
+            "lat": -1.2833,
+            "lng": 36.8219,
+            "status": "active",
+            "deals_count": 3
+          },
+          {
+            "id": "hub_westlands",
+            "name": "Westlands Collection",
+            "lat": -1.2687,
+            "lng": 36.8055,
+            "status": "active",
+            "deals_count": 2
+          },
+          {
+            "id": "hub_kilimani",
+            "name": "Kilimani Hub",
+            "lat": -1.2921,
+            "lng": 36.7860,
+            "status": "active",
+            "deals_count": 1
+          },
+          {
+            "id": "hub_eastleigh",
+            "name": "Eastleigh Pickup",
+            "lat": -1.2694,
+            "lng": 36.8481,
+            "status": "active",
+            "deals_count": 4
+          },
+          {
+            "id": "hub_karen",
+            "name": "Karen Drop Point",
+            "lat": -1.3194,
+            "lng": 36.7052,
+            "status": "closed",
+            "deals_count": 0
+          }
+        ]
+      }
+    }
+  ],
+  "actions": {
+    "on_hub_tap": "show_hub_detail_sheet",
+    "on_map_long_press": "suggest_new_hub"
+  }
+}
