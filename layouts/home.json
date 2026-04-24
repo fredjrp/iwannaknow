@@ -1,16 +1,151 @@
 {
   "screen": "Home",
   "theme": "M3_Expressive",
+  "version": 2,
   "components": [
     {
       "type": "M3Card",
-      "id": "hero_deal",
-      "content": {
-        "title": "Nairobi Group Buy: Power Banks",
-        "supporting_text": "Join the current group to save 40%",
-        "badge": "Active"
+      "id": "floy_banner",
+      "props": {
+        "elevation": 0,
+        "color": "tertiaryContainer"
       },
-      "action": "view_deal_details"
+      "content": {
+        "title": "👋 Hey! Floy here!",
+        "supporting_text": "Tap the chat button to ask me about deals, profit calculations, or how group buys work!",
+        "badge": "AI Assistant"
+      },
+      "action": "open_floy_chat"
+    },
+    {
+      "type": "M3Card",
+      "id": "hero_deal",
+      "props": {
+        "elevation": 2
+      },
+      "content": {
+        "title": "🔥 Nairobi Group Buy: Power Banks",
+        "supporting_text": "10,000mAh Fast Charging - MOQ: 20 units",
+        "badge": "HOT DEAL"
+      },
+      "child": {
+        "type": "M3Column",
+        "children": [
+          {
+            "type": "M3Text",
+            "props": {
+              "text": "Wholesale: KES 600 | Retail: KES 1,500+",
+              "style": "bodyMedium"
+            }
+          },
+          {
+            "type": "M3Row",
+            "props": {
+              "spacing": 8
+            },
+            "children": [
+              {
+                "type": "M3Chip",
+                "props": {
+                  "label": "14/20 Joined",
+                  "color": "primaryContainer"
+                }
+              },
+              {
+                "type": "M3Chip",
+                "props": {
+                  "label": "Save 40%",
+                  "color": "tertiaryContainer"
+                }
+              }
+            ]
+          },
+          {
+            "type": "M3SplitButton",
+            "props": {
+              "primary_label": "Join (KES 600)",
+              "secondary_label": "View Details",
+              "primary_action": "trigger_stk_push:deal_001:600",
+              "secondary_action": "view_deal:deal_001"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "M3Card",
+      "id": "deal_earbuds",
+      "props": {
+        "elevation": 1
+      },
+      "content": {
+        "title": "🎧 Wireless Earbuds Pro",
+        "supporting_text": "Bluetooth 5.3, Noise Cancelling - MOQ: 20 units",
+        "badge": "8/20 Joined"
+      },
+      "child": {
+        "type": "M3SplitButton",
+        "props": {
+          "primary_label": "Join (KES 800)",
+          "secondary_label": "Details",
+          "primary_action": "trigger_stk_push:deal_002:800",
+          "secondary_action": "view_deal:deal_002"
+        }
+      }
+    },
+    {
+      "type": "M3Card",
+      "id": "deal_solar",
+      "props": {
+        "elevation": 1
+      },
+      "content": {
+        "title": "☀️ Solar Power Bank 20W",
+        "supporting_text": "With LED Light - MOQ: 15 units",
+        "badge": "12/15 - Almost Full!"
+      },
+      "child": {
+        "type": "M3SplitButton",
+        "props": {
+          "primary_label": "Join (KES 1,200)",
+          "secondary_label": "Details",
+          "primary_action": "trigger_stk_push:deal_003:1200",
+          "secondary_action": "view_deal:deal_003"
+        }
+      }
+    },
+    {
+      "type": "M3Card",
+      "id": "jumia_promo",
+      "props": {
+        "elevation": 0,
+        "color": "secondaryContainer"
+      },
+      "content": {
+        "title": "📦 Sell on Jumia?",
+        "supporting_text": "Connect your seller account for automated fulfillment. We print labels and ship directly to Jumia hubs!",
+        "badge": "Dropshippers"
+      },
+      "action": "open_jumia_settings"
+    },
+    {
+      "type": "M3Card",
+      "id": "hub_promo",
+      "props": {
+        "elevation": 0,
+        "color": "surfaceVariant"
+      },
+      "content": {
+        "title": "📍 5 Collection Hubs in Nairobi",
+        "supporting_text": "CBD, Westlands, Kilimani, Eastleigh & Karen. Pick up your group buy orders near you!",
+        "badge": "Free Pickup"
+      },
+      "action": "navigate_to_map"
     }
-  ]
+  ],
+  "_meta": {
+    "refresh_interval_seconds": 300,
+    "cache_version": 2,
+    "min_app_version": "1.0.0"
+  }
 }
