@@ -1,0 +1,82 @@
+{
+  "screen": "Profile",
+  "theme": "M3_Expressive",
+  "version": 2,
+  "components": [
+    {
+      "type": "M3Card",
+      "id": "user_info",
+      "props": {
+        "elevation": 0,
+        "color": "primaryContainer"
+      },
+      "content": {
+        "title": "{user.name}",
+        "supporting_text": "Member since {user.join_date}",
+        "badge": "{user.role}"
+      }
+    },
+    {
+      "type": "M3Card",
+      "id": "jumia_status",
+      "props": {
+        "elevation": 1
+      },
+      "content": {
+        "title": "📦 Jumia Seller Center",
+        "supporting_text": "Connect your seller account to automate order fulfillment",
+        "badge": "Not Connected"
+      },
+      "action": "open_jumia_settings"
+    },
+    {
+      "type": "M3Card",
+      "id": "transaction_history",
+      "props": {
+        "elevation": 1
+      },
+      "content": {
+        "title": "💳 Payment History",
+        "supporting_text": "View your M-Pesa transactions and group buy payments"
+      },
+      "action": "view_transactions"
+    },
+    {
+      "type": "M3Card",
+      "id": "my_deals",
+      "props": {
+        "elevation": 1
+      },
+      "content": {
+        "title": "🛍️ My Group Buys",
+        "supporting_text": "Track your active and completed group buy participations"
+      },
+      "action": "view_my_deals"
+    },
+    {
+      "type": "M3Card",
+      "id": "settings",
+      "props": {
+        "elevation": 1
+      },
+      "content": {
+        "title": "⚙️ Settings",
+        "supporting_text": "Notifications, privacy, and app preferences"
+      },
+      "action": "open_settings"
+    },
+    {
+      "type": "M3Card",
+      "id": "logout",
+      "props": {
+        "elevation": 0,
+        "color": "errorContainer"
+      },
+      "content": {
+        "title": "Sign Out",
+        "supporting_text": "You'll need to sign in again to access Delo"
+      },
+      "action": "sign_out"
+    }
+  ]
+}
